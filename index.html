@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画板</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- <div id="canvas1"> -->
+    <!-- 在创建元素时标签内设置宽高的同时样式文件设置宽高会强制拉伸canvas,模糊 -->
+    <canvas id="canvas" width="100" height="100"></canvas>
+    
+    <script>
+        //移动鼠标绘制圆点
+        // canvas1.onmousemove=(e)=>{
+        //     // console.log(e)
+        //     console.log(e.clientX)
+        //     console.log(e.clientY)
+        //     let div=document.createElement('div')
+        //     div.style.position='absolute';
+        //     div.style.left=e.clientX+'px'
+        //     div.style.top=e.clientY+'px'
+        //     div.style.border='1px solid red'
+        //     div.style.width='5px'
+        //     div.style.height='5px'
+        //     div.style.marginLeft='-3px'
+        //     div.style.marginTop='-3px'
+        //     div.style.borderRadius='50%'
+        //     div.style.backgroundColor='black'
+        //     canvas1.appendChild(div)
+        // }
+        let canvas=document.getElementById("canvas")
+        
+        
+        //body的高度是由里面的内容确定的，除非在样式文件中设置了宽高
+        // canvas.width=document.body.clientWidth;
+        // canvas.height=document.body.clientHeight;
+        // console.log(document.body.clientWidth);
+        //根据浏览器的实际宽高
+        canvas.width=document.documentElement.clientWidth;
+        canvas.height=document.documentElement.clientHeight;
+        //2d渲染上下文，可以理解为在画布中拿起画笔
+        let ctx=canvas.getContext("2d");
+
+        let painting=false;
+        ctx.fillStyle="black";
+
+        // 移动端绘制
+        var isTouchDevice='ontouchstart' in document.documentElement;
+        console.log(isTouchDevice);
+
+        //触屏设备判断
+        if(isTouchDevice){
+            console.log('移动端设备')
+            canvas.ontouchmove=(e)=>{
+                console.log(e.touches[0]);
+                let x=e.touches[0].clientX;
+                let y=e.touches[0].clientY;
+                ctx.beginPath();
+                // ctx.fillRect(e.clientX-5,e.clientY-5,10,10);
+                ctx.arc(x,y,10,0,2 * Math.PI);
+                // ctx.stroke();
+                ctx.fill();
+            }
+        }else{
+        // 浏览器会调用canvas.onmousemove
+        // canvas.onmousemove(事件相关信息)
+            canvas.onmousedown=(e)=>{   
+            painting=true;   
+        }
+        // 浏览器会调用canvas.onmousemove
+        // canvas.onmousemove(事件相关信息)
+        canvas.onmousemove=(e)=>{
+            if(painting===true){
+                ctx.beginPath();
+                // ctx.fillRect(e.clientX-5,e.clientY-5,10,10);
+                ctx.arc(e.clientX,e.clientY,10,0,2 * Math.PI);
+                // ctx.stroke();
+                ctx.fill();
+            }
+            // else{
+            //     console.log('什么都不做');
+            // }
+        }
+
+        //鼠标放开不按painting就返回原来的false
+        canvas.onmouseup=(e)=>{
+            painting = false;
+                }
+        }
+        /*点击创建canvas*/
+
+        
+        
+          
+        //绘制一个填充的矩形
+        // ctx.fillRect(10,10,55,50);
+        //在鼠标点击位置画一个矩形
+        // ctx.fillRect(e.clientX-3,e.clientY-3,2,2);
+        //绘制圆弧
+        // ctx.arc(e.clientX-5,e.clientY-5,25,0,2 * Math.PI)
+        // ctx.fillStyle="rgba(0,0,200,0.5)";
+        // ctx.fillRect(30,30,55,50);        
+        
+        
+        
+            </script>
+</body>
+</html>
